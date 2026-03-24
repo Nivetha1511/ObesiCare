@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ObesiCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <span class="auth-icon">🏥</span>
+                <h1>ObesiCare</h1>
+                <p>Login to Your Account</p>
+            </div>
+
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Enter your username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="auth-button">Login</button>
+            </form>
+
+            <div class="auth-message" id="message"></div>
+
+            <div class="auth-footer">
+                <p>Don't have an account? 
+                    <a href="/signup" id="signupLink">Create one here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        const router = window.ObesiCareRouter;
+        const loginForm = document.getElementById('loginForm');
+        const messageDiv = document.getElementById('message');
+        const signupLink = document.getElementById('signupLink');
+
+        if (signupLink) {
+            signupLink.href = router.page('signup');
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            messageDiv.textContent = 'Logging in...';
+            messageDiv.className = 'auth-message loading';
+
+            try {
+                const response = await fetch(router.api('/api/login'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('username', username);
+                    messageDiv.textContent = '✓ Login successful! Redirecting...';
+                    messageDiv.className = 'auth-message success';
+                    setTimeout(() => {
+                        window.location.href = router.page('form');
+                    }, 1500);
+                } else {
+                    messageDiv.textContent = data.message;
+                    messageDiv.className = 'auth-message error';
+                    
+                    // If user not found, redirect to sign up as required flow.
+                    if (data.action === 'signup') {
+                        messageDiv.textContent = 'User not found. Redirecting to sign up...';
+                        setTimeout(() => {
+                            window.location.href = router.page('signup');
+                        }, 1200);
+                    }
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Error: ' + error.message;
+                messageDiv.className = 'auth-message error';
+            }
+        });
+    </script>
+</body>
+</html>

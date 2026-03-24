@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ObesiCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-box">
+            <div class="auth-header">
+                <span class="auth-icon">🏥</span>
+                <h1>ObesiCare</h1>
+                <p>Create Your Account</p>
+            </div>
+
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        placeholder="Choose a username (min 3 characters)"
+                        minlength="3"
+                        required
+                    >
+                    <small>At least 3 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Create a password (min 6 characters)"
+                        minlength="6"
+                        required
+                    >
+                    <small>At least 6 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        placeholder="Confirm your password"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="auth-button">Create Account</button>
+            </form>
+
+            <div class="auth-message" id="message"></div>
+
+            <div class="auth-footer">
+                <p>Already have an account? 
+                    <a href="/login" id="loginLink">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        const router = window.ObesiCareRouter;
+        const signupForm = document.getElementById('signupForm');
+        const messageDiv = document.getElementById('message');
+        const loginLink = document.getElementById('loginLink');
+
+        if (loginLink) {
+            loginLink.href = router.page('login');
+        }
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+            // Validate inputs
+            if (username.length < 3) {
+                messageDiv.textContent = 'Username must be at least 3 characters';
+                messageDiv.className = 'auth-message error';
+                return;
+            }
+
+            if (password.length < 6) {
+                messageDiv.textContent = 'Password must be at least 6 characters';
+                messageDiv.className = 'auth-message error';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                messageDiv.textContent = 'Passwords do not match';
+                messageDiv.className = 'auth-message error';
+                return;
+            }
+
+            messageDiv.textContent = 'Creating account...';
+            messageDiv.className = 'auth-message loading';
+
+            try {
+                const response = await fetch(router.api('/api/signup'), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    localStorage.setItem('username', username);
+                    messageDiv.textContent = '✓ Account created! Redirecting...';
+                    messageDiv.className = 'auth-message success';
+                    setTimeout(() => {
+                        window.location.href = router.page('form');
+                    }, 1500);
+                } else {
+                    messageDiv.textContent = data.message;
+                    messageDiv.className = 'auth-message error';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Error: ' + error.message;
+                messageDiv.className = 'auth-message error';
+            }
+        });
+    </script>
+</body>
+</html>

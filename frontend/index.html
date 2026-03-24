@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ObesiCare - Obesity Risk Prediction</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2ecc71">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                <span class="logo-text">ObesiCare</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#" id="startBtn" class="nav-link nav-button">Start Assessment</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Predict Your Obesity Risk</h1>
+            <p>AI-powered health assessment using advanced machine learning</p>
+            <button class="cta-button" id="heroStartBtn">Begin Assessment</button>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- What is Obesity -->
+        <section class="content-section" id="obesity">
+            <div class="section-header">
+                <h2>What is Obesity?</h2>
+            </div>
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="card-icon">⚖️</div>
+                    <h3>Definition</h3>
+                    <p>Obesity is a chronic disease characterized by excess body fat that increases health risks. It's measured using Body Mass Index (BMI) and lifestyle factors.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-icon">📊</div>
+                    <h3>Statistics</h3>
+                    <p>Over 40% of adults worldwide are overweight or obese. This rise has serious implications for public health and quality of life.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-icon">🔬</div>
+                    <h3>Causes</h3>
+                    <p>Multiple factors contribute: genetics, diet, physical activity, sleep, stress, and medical conditions all play a role.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Adolescent Obesity -->
+        <section class="content-section" id="adolescent">
+            <div class="section-header">
+                <h2>Adolescent Obesity</h2>
+            </div>
+            <div class="content-grid">
+                <div class="content-card">
+                    <div class="card-icon">👨‍👩‍👧</div>
+                    <h3>Growing Problem</h3>
+                    <p>Teenage obesity is increasing globally. Early intervention is crucial to prevent lifelong health issues and mental health impacts.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-icon">🍔</div>
+                    <h3>Lifestyle Factors</h3>
+                    <p>Screen time, fast food consumption, sedentary behavior, and poor sleep habits significantly increase obesity risk in teenagers.</p>
+                </div>
+                <div class="content-card">
+                    <div class="card-icon">💪</div>
+                    <h3>Prevention</h3>
+                    <p>Regular physical activity, balanced nutrition, adequate sleep, and family support are key to maintaining healthy weight.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dangers of Obesity -->
+        <section class="content-section" id="dangers">
+            <div class="section-header">
+                <h2>Health Risks of Obesity</h2>
+            </div>
+            <div class="risks-container">
+                <div class="risk-card">
+                    <div class="risk-icon">🩺</div>
+                    <div class="risk-content">
+                        <h3>Diabetes</h3>
+                        <p>Type 2 diabetes is strongly linked to obesity. Excess weight affects how your body processes insulin.</p>
+                    </div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-icon">❤️</div>
+                    <div class="risk-content">
+                        <h3>Heart Disease</h3>
+                        <p>Obesity increases risk of high blood pressure, high cholesterol, and cardiovascular disease.</p>
+                    </div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-icon">🧠</div>
+                    <div class="risk-content">
+                        <h3>Mental Health</h3>
+                        <p>Depression, anxiety, and low self-esteem are common. Social stigma can worsen psychological impacts.</p>
+                    </div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-icon">😴</div>
+                    <div class="risk-content">
+                        <h3>Sleep Disorders</h3>
+                        <p>Sleep apnea and other sleep issues are more common in people with obesity.</p>
+                    </div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-icon">🦴</div>
+                    <div class="risk-content">
+                        <h3>Joint Problems</h3>
+                        <p>Extra weight puts strain on joints, increasing risk of arthritis and mobility issues.</p>
+                    </div>
+                </div>
+                <div class="risk-card">
+                    <div class="risk-icon">🚫</div>
+                    <div class="risk-content">
+                        <h3>Other Conditions</h3>
+                        <p>Increased risk of certain cancers, liver disease, and other chronic conditions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the System -->
+        <section class="content-section" id="about">
+            <div class="section-header">
+                <h2>About This System</h2>
+            </div>
+            <div class="about-container">
+                <div class="about-text">
+                    <h3>AI-Powered Obesity Risk Prediction</h3>
+                    <p>ObesiCare uses advanced artificial neural networks trained on comprehensive health and lifestyle data to predict your obesity risk level.</p>
+                    
+                    <h4>How It Works:</h4>
+                    <ul class="features-list">
+                        <li><strong>Comprehensive Assessment</strong> - Analyzes 16 health and lifestyle factors</li>
+                        <li><strong>AI Model</strong> - Uses a trained neural network for accurate predictions</li>
+                        <li><strong>Personalized Results</strong> - Tailored risk assessment based on your data</li>
+                        <li><strong>Confidence Scores</strong> - Transparency in prediction confidence</li>
+                        <li><strong>Secure Authentication</strong> - Your data is stored securely</li>
+                    </ul>
+
+                    <h4>Privacy & Security:</h4>
+                    <p>Your health data is handled with strict confidentiality. We use encrypted storage and secure authentication protocols.</p>
+
+                    <h4>Disclaimer:</h4>
+                    <p><em>This tool is for educational and informational purposes. It should not replace professional medical advice. Always consult with healthcare professionals for diagnosis and treatment.</em></p>
+                </div>
+                <div class="about-features">
+                    <div class="feature-box">
+                        <div class="feature-number">16</div>
+                        <p>Health Parameters</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-number">7</div>
+                        <p>Risk Categories</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-number">AI</div>
+                        <p>Neural Network</p>
+                    </div>
+                    <div class="feature-box">
+                        <div class="feature-number">🔒</div>
+                        <p>Secure & Private</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Install Button -->
+    <div id="installPrompt" class="install-prompt hidden">
+        <div class="install-content">
+            <span class="install-icon">📲</span>
+            <div class="install-text">
+                <p><strong>Install App</strong></p>
+                <small>Add to your home screen</small>
+            </div>
+        </div>
+        <button id="installBtn" class="install-button">Install</button>
+        <button id="dismissBtn" class="dismiss-button">×</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 ObesiCare - AI-Powered Health Assessment</p>
+        <p>For educational purposes. Consult healthcare professionals for medical advice.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

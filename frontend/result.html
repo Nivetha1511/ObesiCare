@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - ObesiCare</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="result-page">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <span class="logo-icon">🏥</span>
+                <span class="logo-text">ObesiCare</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/" class="nav-link" id="homeNavLink">Home</a></li>
+                <li><button id="logoutBtn" class="nav-link nav-button">Logout</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="result-container">
+        <div class="result-header">
+            <h1>Your Assessment Results</h1>
+            <p id="username-display">Welcome, <strong id="username"></strong></p>
+        </div>
+
+        <div id="resultContent" class="result-content">
+            <!-- Main Result Card -->
+            <div class="result-card main-result">
+                <div class="result-icon" id="resultIcon">🔄</div>
+                <div class="result-main">
+                    <h2 id="riskLevel">Loading...</h2>
+                    <p id="prediction" class="prediction-text">Please wait while we analyze your data...</p>
+                    <p id="predictionNote" class="result-summary" style="margin-top: 8px; font-size: 0.95rem;"></p>
+                    <div class="confidence-container">
+                        <label>Prediction Confidence</label>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
+                        </div>
+                        <p class="confidence-text" id="confidenceText">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Assessment Details -->
+            <div class="result-grid">
+                <div class="result-box">
+                    <h3>Risk Classification</h3>
+                    <p class="result-summary" id="resultSummary">Loading...</p>
+                </div>
+
+                <div class="result-box">
+                    <h3>Health Recommendations</h3>
+                    <ul id="recommendations" class="recommendations-list">
+                        <li>Loading recommendations...</li>
+                    </ul>
+                </div>
+
+                <div class="result-box">
+                    <h3>Prediction Breakdown</h3>
+                    <div id="predictionChart" class="prediction-chart">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="result-box">
+                    <h3>Next Steps</h3>
+                    <ol class="steps-list">
+                        <li>Review your results carefully</li>
+                        <li>Consult with a healthcare professional</li>
+                        <li>Develop a personalized health plan</li>
+                        <li>Monitor your progress regularly</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="result-actions">
+            <button id="newAssessmentBtn" class="action-button primary">Take Another Assessment</button>
+            <button id="homeBtn" class="action-button secondary">Return Home</button>
+        </div>
+
+        <div class="disclaimer">
+            <p><strong>⚠️ Disclaimer:</strong> This assessment is for informational and educational purposes only and should not be used as a substitute for professional medical advice, diagnosis, or treatment. Please consult with a qualified healthcare provider for personalized recommendations and medical advice.</p>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        const router = window.ObesiCareRouter;
+        const homeNavLink = document.getElementById('homeNavLink');
+        if (homeNavLink) {
+            homeNavLink.href = router.page('index');
+        }
+
+        // Check if user is logged in
+        const username = localStorage.getItem('username');
+        if (!username) {
+            window.location.href = router.page('login');
+        }
+
+        document.getElementById('username').textContent = username;
+
+        // Logout button
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('username');
+            localStorage.removeItem('prediction');
+            window.location.href = router.page('index');
+        });
+
+        // Get prediction from localStorage
+        const predictionData = JSON.parse(localStorage.getItem('prediction') || '{}');
+
+        if (!predictionData.success) {
+            document.getElementById('resultContent').innerHTML = `
+                <div class="error-box">
+                    <h2>No Results Found</h2>
+                    <p>Please complete the assessment form first.</p>
+                    <a href="${router.page('form')}" class="action-button primary">Go to Assessment</a>
+                </div>
+            `;
+        } else {
+            displayResults(predictionData);
+        }
+
+        function displayResults(data) {
+            const {
+                risk_level,
+                prediction,
+                confidence,
+                color,
+                icon,
+                all_predictions,
+                note,
+                prediction_method
+            } = data;
+
+            // Update main result
+            document.getElementById('riskLevel').textContent = risk_level;
+            document.getElementById('riskLevel').style.color = color;
+            document.getElementById('prediction').textContent = `You are classified as: ${prediction}`;
+            document.getElementById('resultIcon').textContent = icon;
+            document.getElementById('resultIcon').style.color = color;
+            document.getElementById('predictionNote').textContent = note || '';
+
+            if (prediction_method === 'pediatric_bmi_rule') {
+                document.getElementById('predictionNote').style.color = '#8e5a00';
+            }
+
+            // Update confidence
+            document.getElementById('confidenceFill').style.width = confidence + '%';
+            document.getElementById('confidenceFill').style.backgroundColor = color;
+            document.getElementById('confidenceText').textContent = confidence + '%';
+
+            // Risk assessment summary
+            const summaries = {
+                'Insufficient Weight': 'Your assessment indicates insufficient weight. Consider consulting with a healthcare provider.',
+                'Normal Weight': 'Great! Your assessment shows a healthy weight range. Maintain healthy habits.',
+                'Overweight Level I': 'Your assessment indicates mild overweight. Consider lifestyle modifications.',
+                'Overweight Level II': 'Your assessment indicates moderate overweight. Health intervention is recommended.',
+                'Obesity Type I': 'Your assessment indicates obesity class I. Professional medical guidance is strongly recommended.',
+                'Obesity Type II': 'Your assessment indicates obesity class II. Immediate consultation with healthcare providers is important.',
+                'Obesity Type III': 'Your assessment indicates severe obesity class III. Urgent medical consultation is necessary.'
+            };
+
+            document.getElementById('resultSummary').textContent = summaries[risk_level] || 'Consult a healthcare provider for personalized advice.';
+
+            // Recommendations
+            const recommendations = generateRecommendations(risk_level);
+            const recList = document.getElementById('recommendations');
+            recList.innerHTML = recommendations.map(r => `<li>${r}</li>`).join('');
+
+            // Prediction chart
+            const chartHTML = Object.entries(all_predictions)
+                .map(([className, prob]) => {
+                    const barColor = className === prediction ? color : '#e0e0e0';
+                    return `
+                        <div class="chart-item">
+                            <label>${className}</label>
+                            <div class="chart-bar">
+                                <div class="chart-fill" style="width: ${prob}%; background-color: ${barColor};"></div>
+                            </div>
+                            <span>${prob.toFixed(1)}%</span>
+                        </div>
+                    `;
+                })
+                .join('');
+
+            document.getElementById('predictionChart').innerHTML = chartHTML;
+        }
+
+        function generateRecommendations(riskLevel) {
+            const recommendationMap = {
+                'Insufficient Weight': [
+                    '🥗 Increase caloric intake with nutrient-dense foods',
+                    '💪 Incorporate strength training exercises',
+                    '🥛 Focus on protein-rich foods',
+                    '👨‍⚕️ Consult a nutritionist for personalized diet'
+                ],
+                'Normal Weight': [
+                    '✅ Maintain current healthy lifestyle',
+                    '🏃 Continue regular physical activity (150 min/week)',
+                    '🥗 Keep balanced, nutritious diet',
+                    '😴 Ensure 7-9 hours of quality sleep'
+                ],
+                'Overweight Level I': [
+                    '🚶 Increase daily physical activity to 150+ minutes',
+                    '🥗 Reduce caloric intake gradually',
+                    '💧 Increase water consumption',
+                    '👨‍⚕️ Consult healthcare provider'
+                ],
+                'Overweight Level II': [
+                    '🏋️ Start structured exercise program',
+                    '🥗 Follow balanced nutrition plan',
+                    '📊 Monitor weight weekly',
+                    '👨‍⚕️ Seek professional medical guidance'
+                ],
+                'Obesity Type I': [
+                    '⚠️ Expert medical consultation needed',
+                    '🏥 Consider supervised weight management program',
+                    '📋 Develop personalized treatment plan',
+                    '👨‍⚕️ Regular follow-ups with healthcare team'
+                ],
+                'Obesity Type II': [
+                    '🚨 Immediate medical intervention recommended',
+                    '🏥 Specialized obesity treatment program',
+                    '💊 Medication may be considered',
+                    '👨‍⚕️ Coordinated care with multiple specialists'
+                ],
+                'Obesity Type III': [
+                    '🚨 Urgent professional medical intervention',
+                    '🏥 Comprehensive medical management required',
+                    '📋 Consider advanced treatment options',
+                    '👨‍⚕️ Intensive medical supervision necessary'
+                ]
+            };
+
+            return recommendationMap[riskLevel] || [
+                '👨‍⚕️ Consult with a healthcare professional',
+                '📊 Get personalized advice based on your situation'
+            ];
+        }
+
+        // Action buttons
+        document.getElementById('newAssessmentBtn').addEventListener('click', () => {
+            localStorage.removeItem('prediction');
+            window.location.href = router.page('form');
+        });
+
+        document.getElementById('homeBtn').addEventListener('click', () => {
+            localStorage.removeItem('prediction');
+            window.location.href = router.page('index');
+        });
+    </script>
+</body>
+</html>
