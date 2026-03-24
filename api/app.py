@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_cors import CORS
 import tensorflow as tf
-from keras.models import load_model
 import pickle
 import pandas as pd
 import numpy as np
@@ -94,7 +93,7 @@ def _pediatric_probabilities(center_idx):
     return probs
 
 try:
-    model = load_model(MODEL_PATH)
+    model = tf.keras.models.load_model(MODEL_PATH, compile=False)
     with open(SCALER_PATH, 'rb') as f:
         scaler = pickle.load(f)
     with open(ENCODER_PATH, 'rb') as f:
