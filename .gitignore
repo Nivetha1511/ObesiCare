@@ -51,7 +51,8 @@ Thumbs.db
 .env.local
 
 # Project specific
-models/
+# Keep production model artifacts in git for deployment
+# models/
 .pytest_cache/
 htmlcov/
 .coverage
