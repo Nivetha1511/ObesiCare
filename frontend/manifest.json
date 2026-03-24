@@ -2,7 +2,7 @@
   "name": "ObesiCare - Obesity Risk Prediction",
   "short_name": "ObesiCare",
   "description": "AI-powered obesity risk assessment and prediction system",
-  "start_url": "/",
+  "start_url": "/login",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
