@@ -1,4 +1,4 @@
-const CACHE_NAME = 'obesicare-v1';
+const CACHE_NAME = 'obesecare-v1';
 
 const CORE_ASSETS = [
   '/',

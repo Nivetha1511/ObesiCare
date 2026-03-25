@@ -1,6 +1,6 @@
 {
-  "name": "ObesiCare - Obesity Risk Prediction",
-  "short_name": "ObesiCare",
+  "name": "ObeseCare - Obesity Risk Prediction",
+  "short_name": "ObeseCare",
   "description": "AI-powered obesity risk assessment and prediction system",
   "start_url": "/login",
   "scope": "/",
@@ -25,7 +25,7 @@
   "categories": ["health", "medical"],
   "screenshots": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%232ecc71' width='540' height='720'/><text x='50%' y='50%' font-size='200' text-anchor='middle' dominant-baseline='central'>ObesiCare</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%232ecc71' width='540' height='720'/><text x='50%' y='50%' font-size='200' text-anchor='middle' dominant-baseline='central'>ObeseCare</text></svg>",
       "sizes": "540x720",
       "type": "image/svg+xml"
     }

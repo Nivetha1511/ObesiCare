@@ -386,7 +386,7 @@ def server_error(error):
 # ==================== Main ====================
 
 if __name__ == '__main__':
-    print("Starting ObesiCare Flask API...")
+    print("Starting ObeseCare Flask API...")
     print("Available endpoints:")
     print("  GET  /               - Home page")
     print("  GET  /login          - Login page")
